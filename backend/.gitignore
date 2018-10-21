@@ -1,0 +1,6 @@
+gin-bin
+logs/error/*
+data/image/*
+main
+
+!.gitkeep
