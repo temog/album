@@ -255,7 +255,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .el-card .memo {
   padding: 15px;
   color: #444;
