@@ -332,6 +332,7 @@ func ResponseOption(c *gin.Context) {
 
 func ResponseValidationError(c *gin.Context, err error) {
 	errStr := err.Error()
+	util.Dump(errStr)
 	resp := gin.H{}
 	if strings.Index(errStr, "'Token'") != -1 {
 		resp = gin.H{"status": "authError"}

@@ -157,7 +157,7 @@ export default {
               canvas.height = dstHeight
               const ctx = canvas.getContext('2d')
               ctx.drawImage(resize, 0, 0, maxWidth, dstHeight)
-              url = canvas.toDataURL('image/webp')
+              url = canvas.toDataURL('image/jpeg')
             }
 
             // 画像をデータ突っ込む
