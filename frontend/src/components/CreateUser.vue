@@ -101,16 +101,33 @@ export default {
         }
 
         const url = this.$gm_config('api', 'createUser')
-        this.$gm_api(url, this.form).then((resp) => {
-          if (!resp.status) {
-            this.$alert('invalid api response (userCount)', 'システムエラー', {
-              type: 'warning',
-              confirmButtonText: 'Close'
-            })
-            return
-          }
-          this.complete = true
-        })
+        console.warn(url)
+
+        if (!this.roleOption) {
+          // 初回ユーザ
+          this.$gm_post(url, this.form).then((resp) => {
+            if (!resp.status) {
+              this.$alert('invalid api response (userCount)', 'システムエラー', {
+                type: 'warning',
+                confirmButtonText: 'Close'
+              })
+              return
+            }
+            this.complete = true
+          })
+        } else {
+          // 初回以降
+          this.$gm_api(url, this.form).then((resp) => {
+            if (!resp.status) {
+              this.$alert('invalid api response (userCount)', 'システムエラー', {
+                type: 'warning',
+                confirmButtonText: 'Close'
+              })
+              return
+            }
+            this.complete = true
+          })
+        }
       })
     }
   }

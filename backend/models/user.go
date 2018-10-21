@@ -220,15 +220,17 @@ func CreateUser(input InputCreateUser) bool {
 		role = "guest"
 	}
 
-	util.Dump("hogeee 1")
+	util.Dump("create user 1")
 
 	col := GetCollection("user")
 	count, err := col.Count()
+	util.Dump(count)
+	util.Dump(err)
 	if err != nil {
 		LogError(err)
 		return false
 	}
-	util.Dump("hogeee 2")
+	util.Dump("create user 2")
 
 	// 初回ユーザ以外は token 必須
 	if count != 0 {
@@ -240,7 +242,7 @@ func CreateUser(input InputCreateUser) bool {
 	} else {
 		role = "admin"
 	}
-	util.Dump("hogeee 3")
+	util.Dump("create user 3")
 
 	err = col.Insert(&User{
 		bson.NewObjectId(),
@@ -256,7 +258,7 @@ func CreateUser(input InputCreateUser) bool {
 		return false
 	}
 
-	fmt.Println("create success")
+	util.Dump("create success")
 	return true
 }
 
