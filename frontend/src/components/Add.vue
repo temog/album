@@ -6,7 +6,7 @@
     <el-form status-icon ref="form" :model="form" :rules="rules" label-position="top" class="add">
 
       <el-form-item label="Tag" prop="tag">
-        <el-input v-model="form.tag" style="width:50%" />
+        <el-input v-model="form.tag" />
         <el-select v-model="tagCandidate" placeholder="タグ一覧">
           <el-option v-for="tag in tags"
             :key="tag.name"
@@ -28,7 +28,7 @@
 
       <div id="preview"></div>
 
-      <el-row>
+      <el-row class="myGrid">
         <el-card :body-style="{ padding: '0px' }" v-for="(img, key) in form.images" :key="key">
           <img :src="img.url">
           <el-button @click="cancelImage(key)" size="mini" type="info" icon="el-icon-close" round class="cancelImg">取消</el-button>
@@ -244,7 +244,7 @@ export default {
   font-size: 40px;
 }
 .el-row {
-  display: flex !important;
+  /*display: flex !important;*/
   flex-flow: row wrap;
   justify-content: flex-start;
   align-items: flex-start;
@@ -258,7 +258,7 @@ export default {
 }
 
 .el-card {
-  width: 32%;
+  /*width: 32%;*/
   margin: 0.66%;
 }
 .el-card img {
@@ -269,5 +269,8 @@ export default {
 }
 .el-card .control {
   margin-bottom: 10px;
+}
+.myGrid .el-card {
+  height: 100%;
 }
 </style>

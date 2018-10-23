@@ -40,15 +40,20 @@
       class="sideMenu"
       background-color="#545c64"
       text-color="#fff"
-      active-text-color="#ffd04b">
+      active-text-color="#ffd04b" @click.native="sideMenuOff">
 
-      <router-link v-if="token" v-for="(value, key) in pageLink" :to="value.path" :key="key" @click.native="sideMenuOff">
+      <router-link v-if="token" v-for="(value, key) in pageLink" :to="value.path" :key="key">
         <el-menu-item :index="String(key + 200)">
           <i :class="value.icon"></i>{{ value.label }}
         </el-menu-item>
       </router-link>
 
-      <el-menu-item v-if="token && isAdmin" index="3" @click="confirmSecret">
+      <el-menu-item v-if="token && isAdmin" index="3" @click="move('/admin')">
+        <i class="el-icon-setting"></i>
+        Admin
+      </el-menu-item>
+
+      <el-menu-item v-if="token && isAdmin" index="4" @click="confirmSecret">
         <i class="el-icon-question"></i>
       </el-menu-item>
 
@@ -56,7 +61,7 @@
         Profile
       </el-menu-item>
 
-      <el-menu-item v-if="token" index="3" @click="signOut">
+      <el-menu-item v-if="token" index="6" @click="signOut">
         Sign Out
       </el-menu-item>
     </el-menu>
@@ -114,17 +119,6 @@ export default {
         })
 
         self.$router.push({path: '/top/refresh'})
-
-        /*
-        if (resp.status) {
-          self.addSuccess = true
-          self.$notify({
-            title: '成功',
-            message: '画像の登録に成功しました',
-            type: 'success'
-          })
-        }
-        */
       })
     },
     move (path) {

@@ -55,9 +55,11 @@
             <el-input v-if="!editMarkdown" type="textarea" v-model="memo"></el-input>
             <div v-if="editMarkdown" class="previewMarkdown markdown-body" v-html="markdown(memo)"></div>
 
-            <el-button @click="closeEditMemo" icon="el-icon-close">Cancel</el-button>
-            <el-button v-if="isAdmin" @click="deleteMemo(i, key)" type="danger" icon="el-icon-close">Delete</el-button>
-            <el-button @click="saveMemo(i)" type="primary" icon="el-icon-edit">Save</el-button>
+            <el-button-group>
+              <el-button @click="closeEditMemo" icon="el-icon-close">Cancel</el-button>
+              <el-button v-if="isAdmin" @click="deleteMemo(i, key)" type="danger" icon="el-icon-close">Delete</el-button>
+              <el-button @click="saveMemo(i)" type="primary" icon="el-icon-edit">Save</el-button>
+            </el-button-group>
           </el-form>
         </div>
       </div>
@@ -201,6 +203,8 @@ export default {
 
       const url = GlobalMixin.config('api', 'updateImage')
       GlobalMixin.api(url, data).then((resp) => {
+        this.closeEditMemo()
+
         if (!resp.status) {
           this.$notify({
             title: '更新失敗',
@@ -346,5 +350,35 @@ textarea {
   left: 5px;
   color: #fff;
   font-weight: bold;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+}
+.el-button-group {
+  width: 100%;
+  margin-top: 20px;
+}
+.el-button-group .el-button {
+  width: 33.33%;
+}
+
+@media (max-width: 768px){
+  .editArea {
+    top: 20%;
+    left: 3%;
+    width: 94%;
+  }
+  .el-card.active .memo {
+    margin-left: 3%;
+    width: 94%;
+  }
+  .el-card.active .info {
+    top: 54%;
+    min-width: 75px;
+  }
+  .el-card.active .info .fileName {
+    display: none;
+  }
+  .el-card.active .info .bottom {
+    display: none;
+  }
 }
 </style>

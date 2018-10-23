@@ -96,6 +96,11 @@ body,html {
 .el-card .info {
   padding: 14px;
 }
+.el-card .info span {
+  display: block;
+  width: 100%;
+  text-overflow: ellipsis;
+}
 .el-card .fileName {
   width: 100%;
   white-space: nowrap;
@@ -105,7 +110,7 @@ body,html {
 
 .myGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
 }
 .myGrid [class*=el-col-] {
   float: none;
@@ -119,7 +124,15 @@ body,html {
 .myGrid .el-card {
   height: 300px;
 }
+.el-textarea__inner {
+  height: 200px;
+}
 
+@media (min-width: 480px){
+  .myGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 @media (min-width: 768px) {
   .el-main {
     padding: 20px;
