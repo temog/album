@@ -1,74 +1,74 @@
 <template>
-  <div>
-    <h1 class="h1">{{ $route.params.tagName }}</h1>
+<div>
+  <h1 class="h1">{{ $route.params.tagName }}</h1>
 
-    <el-row class="myGrid">
-      <div class="el-card" v-for="(i, key) in taggedImage" :key="key" :class="{active: i.active}">
-        <i v-if="i.active" @click="inactiveCard(key)" class="cardClose el-icon-circle-close"></i>
-        <div @click="activeCard(key)" :style="imageQuery(i._id)" class="img">
-          <div class="nickname">{{ getNickname(i.userId) }}</div>
-        </div>
-        <div class="info">
+  <el-row class="myGrid">
+    <div class="el-card" v-for="(i, key) in taggedImage" :key="key" :class="{active: i.active}">
+      <i v-if="i.active" @click="inactiveCard(key)" class="cardClose el-icon-circle-close"></i>
+      <div @click="activeCard(key)" :style="imageQuery(i._id)" class="img">
+        <div class="nickname">{{ getNickname(i.userId) }}</div>
+      </div>
+      <div class="info">
 
-          <div class="actions">
+        <div class="actions">
 
-            <el-tooltip v-if="i.secret" class="item" effect="dark" content="secret" placement="top">
-              <font-awesome-icon icon="lock" class="secret" />
-            </el-tooltip>
+          <el-tooltip v-if="i.secret" class="item" effect="dark" content="secret" placement="top">
+            <font-awesome-icon icon="lock" class="secret" />
+          </el-tooltip>
 
-            <el-tooltip v-if="i.memo" class="item" effect="dark" content="メモあり" placement="top">
-              <i class="el-icon-document memoIcon"></i>
-            </el-tooltip>
+          <el-tooltip v-if="i.memo" class="item" effect="dark" content="メモあり" placement="top">
+            <i class="el-icon-document memoIcon"></i>
+          </el-tooltip>
 
-            <el-tooltip class="item" effect="dark" content="メモ追記" placement="top">
-              <i @click="openEditMemo(key, i)" class="el-icon-edit editIcon"></i>
-            </el-tooltip>
+          <el-tooltip class="item" effect="dark" content="メモ追記" placement="top">
+            <i @click="openEditMemo(key, i)" class="el-icon-edit editIcon"></i>
+          </el-tooltip>
 
-          </div>
-
-          <div class="fileName">{{ i.name }}</div>
-          <div class="bottom clearfix">
-            <time class="time">{{ i.updated_at | date }}</time>
-          </div>
         </div>
 
-        <div v-if="!mode && i.memo" class="memo markdown-body" v-html="markdown(i.memo)"></div>
-
-        <div v-if="mode === 'edit'" class="editArea">
-
-          <el-form status-icon label-position="top" class="add">
-            <el-form-item label="Tag" prop="tag">
-              <el-input v-model="editTag" style="width:50%" />
-              <el-select v-model="editTagCandidate" placeholder="タグ一覧">
-                <el-option v-for="tag in tags"
-                  :key="tag.name"
-                  :label="tag.name"
-                  :value="tag.name" />
-              </el-select>
-            </el-form-item>
-
-            <div class="control">
-              <el-switch v-if="isAdmin" inactive-text="secret" v-model="editSecret" class="switchSecret"/>
-              <el-switch inactive-text="preview markdown" v-model="editMarkdown" />
-            </div>
-
-            <el-input v-if="!editMarkdown" type="textarea" v-model="memo"></el-input>
-            <div v-if="editMarkdown" class="previewMarkdown markdown-body" v-html="markdown(memo)"></div>
-
-            <el-button-group>
-              <el-button @click="closeEditMemo" icon="el-icon-close">Cancel</el-button>
-              <el-button v-if="isAdmin" @click="deleteMemo(i, key)" type="danger" icon="el-icon-close">Delete</el-button>
-              <el-button @click="saveMemo(i)" type="primary" icon="el-icon-edit">Save</el-button>
-            </el-button-group>
-          </el-form>
+        <div class="fileName">{{ i.name }}</div>
+        <div class="bottom clearfix">
+          <time class="time">{{ i.updated_at | date }}</time>
         </div>
       </div>
-    </el-row>
-  </div>
+
+      <div v-if="!mode && i.memo" class="memo markdown-body" v-html="markdown(i.memo)"></div>
+
+      <div v-if="mode === 'edit'" class="editArea">
+
+        <el-form status-icon label-position="top" class="add">
+          <el-form-item label="Tag" prop="tag">
+            <el-input v-model="editTag" style="width:50%" />
+            <el-select v-model="editTagCandidate" placeholder="タグ一覧">
+              <el-option v-for="tag in tags" :key="tag.name" :label="tag.name" :value="tag.name" />
+            </el-select>
+          </el-form-item>
+
+          <div class="control">
+            <el-switch v-if="isAdmin" inactive-text="secret" v-model="editSecret" class="switchSecret" />
+            <el-switch inactive-text="preview markdown" v-model="editMarkdown" />
+          </div>
+
+          <el-input v-if="!editMarkdown" type="textarea" v-model="memo"></el-input>
+          <div v-if="editMarkdown" class="previewMarkdown markdown-body" v-html="markdown(memo)"></div>
+
+          <el-button-group>
+            <el-button @click="closeEditMemo" icon="el-icon-close">Cancel</el-button>
+            <el-button v-if="isAdmin" @click="deleteMemo(i, key)" type="danger" icon="el-icon-close">Delete</el-button>
+            <el-button @click="saveMemo(i)" type="primary" icon="el-icon-edit">Save</el-button>
+          </el-button-group>
+        </el-form>
+      </div>
+    </div>
+  </el-row>
+</div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import {
+  mapGetters,
+  mapMutations
+} from 'vuex'
 import GlobalMixin from '@/mixin/globalMixin'
 import Marked from 'marked'
 import 'github-markdown-css/github-markdown.css'
@@ -82,7 +82,8 @@ export default {
       memo: null,
       editTag: null,
       editMarkdown: false,
-      editSecret: false
+      editSecret: false,
+      handler: null
     }
   },
   computed: {
@@ -109,16 +110,17 @@ export default {
       }
 
       this.$store.dispatch('getTagAll')
-      this.getImageScroll()
+      window.addEventListener('scroll', this.getImageScroll, false)
     })
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.getImageScroll, false)
   },
   methods: {
     ...mapMutations(['initTaggedImage', 'spliceTaggedImage']),
     nickname (userId) {
-      console.log(userId)
       for (let i = 0; i < this.userList.length; i++) {
         const user = this.userList[i]
-        console.log(user)
         if (user._id === userId) {
           return user.nickname
         }
@@ -127,12 +129,10 @@ export default {
       return null
     },
     getImageScroll () {
-      window.addEventListener('scroll', () => {
-        clearTimeout(this.getImageAutoTimer)
-        this.getImageAutoTimer = setTimeout(() => {
-          this.getImageAuto()
-        }, 500)
-      })
+      clearTimeout(this.getImageAutoTimer)
+      this.getImageAutoTimer = setTimeout(() => {
+        this.getImageAuto()
+      }, 500)
     },
     getImageAuto () {
       if (this.taggedImageLoading) {
@@ -156,8 +156,7 @@ export default {
         limit: this.limit
       })
     },
-    getData () {
-    },
+    getData () {},
     imageQuery (id) {
       return {
         backgroundImage: 'url(' + GlobalMixin.imageQuery(id) + ')'
@@ -179,7 +178,9 @@ export default {
       const currentTag = []
       image.tag.forEach(tag => {
         for (let i = 0; i < tags.length; i++) {
-          if (tags[i]._id === tag) { currentTag.push(tags[i].name) }
+          if (tags[i]._id === tag) {
+            currentTag.push(tags[i].name)
+          }
         }
       })
       this.editTag = currentTag.join(' ')
@@ -228,8 +229,7 @@ export default {
         type: 'warning'
       }).then(() => {
         this.deleteMemoExec(image, key)
-      }).catch(() => {
-      })
+      }).catch(() => {})
     },
     deleteMemoExec (image, key) {
       const url = GlobalMixin.config('api', 'deleteImage')
@@ -264,21 +264,29 @@ export default {
   padding: 15px;
   color: #444;
 }
+
 .el-card .memoIcon,
-.el-card .editIcon
-{
+.el-card .editIcon,
+.el-card .secret {
   color: #e68e20;
   font-size: 26px;
 }
+
+.el-card .secret {
+  font-size: 22px;
+}
+
 .el-card .editIcon {
   cursor: pointer;
 }
+
 .el-card .actions {
   position: absolute;
   bottom: 5px;
   right: 5px;
   text-aligin: right;
 }
+
 .el-card.active {
   position: fixed;
   width: 100%;
@@ -287,18 +295,22 @@ export default {
   left: 0;
   z-index: 999;
 }
+
 .el-card .img {
   position: relative;
 }
+
 .el-card.active .img {
   height: 100%;
 }
+
 .el-card.active .info {
   position: absolute;
   top: 45%;
   background-color: #fff;
   min-width: 200px;
 }
+
 .el-card.active .memo {
   position: absolute;
   bottom: 3%;
@@ -320,6 +332,7 @@ export default {
   cursor: pointer;
   z-index: 1;
 }
+
 .editArea {
   position: fixed;
   padding: 15px;
@@ -328,22 +341,24 @@ export default {
   width: 60%;
   background-color: #fff;
 }
+
 .control {
   margin-bottom: 10px;
 }
-.secret {
-  color: #666;
-}
+
 .previewMarkdown {
   margin: 30px 0;
 }
+
 .switchSecret {
   margin-right: 20px;
 }
+
 textarea {
   margin-bottom: 15px;
   height: 200px;
 }
+
 .nickname {
   position: absolute;
   bottom: 0;
@@ -352,31 +367,41 @@ textarea {
   font-weight: bold;
   text-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
 }
+
 .el-button-group {
   width: 100%;
   margin-top: 20px;
 }
+
 .el-button-group .el-button {
   width: 33.33%;
 }
 
-@media (max-width: 768px){
+@media (max-width: 768px) {
   .editArea {
     top: 20%;
     left: 3%;
     width: 94%;
   }
+
   .el-card.active .memo {
     margin-left: 3%;
     width: 94%;
   }
+
   .el-card.active .info {
-    top: 54%;
-    min-width: 75px;
+    top: 53%;
+    height: 40px;
+    width: 100px;
+    min-width: auto;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
+
   .el-card.active .info .fileName {
     display: none;
   }
+
   .el-card.active .info .bottom {
     display: none;
   }

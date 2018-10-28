@@ -282,7 +282,7 @@ func GetTaggedImage(tagId string, page int, limit int) []Image {
 	images := []Image{}
 	col := GetCollection("image")
 	query := ImageQuery(bson.M{"tag": tagId})
-	err := col.Find(query).Sort("-updated_at").Skip(page * limit).Limit(limit).All(&images)
+	err := col.Find(query).Sort("created_at").Skip(page * limit).Limit(limit).All(&images)
 	if err != nil {
 		LogError(err)
 	}
