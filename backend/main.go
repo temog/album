@@ -35,7 +35,7 @@ func main() {
 	}
 
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://local.album.temo.xyz:8080", "https://album.temo.xyz"}
+	config.AllowOrigins = []string{"http://local.album.temo.xyz:8080", "https://album.temo.dev"}
 	router.Use(cors.New(config))
 
 	// grouping routes : image
@@ -220,8 +220,8 @@ func main() {
 
 			status, count := models.UserCount()
 			c.JSON(http.StatusOK, gin.H{
-				"status":   status,
-				"count": count,
+				"status": status,
+				"count":  count,
 			})
 		})
 
@@ -237,7 +237,7 @@ func main() {
 			status, userId, nickname, role, token := models.SignIn(input)
 			c.JSON(http.StatusOK, gin.H{
 				"status":   status,
-				"userId": userId,
+				"userId":   userId,
 				"nickname": nickname,
 				"role":     role,
 				"token":    token,
